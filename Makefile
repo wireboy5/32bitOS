@@ -1,9 +1,9 @@
 # This is a variable containing all of the C++ sources.
 # This will remain empty until the future
-CXX_SOURCES = $(wildcard kernel/*.cpp)
+CXX_SOURCES = $(wildcard kernel/*.cpp kernel/**/*.cpp)
 
 # We also do the same for C++ headers
-CXX_HEADERS = $(wildcard kernel/*.h)
+CXX_HEADERS = $(wildcard kernel/*.h kernel/**/*.h)
 
 # And we do the same for assembly files
 ASM_SOURCES = $(wildcard)
@@ -14,12 +14,12 @@ ASMOBJECTS = ${ASM_SOURCES:.asm=.o} # One for ASM
 
 # Now lets create a variable for all of the flags to be passed to out
 # C++ compiler
-CXX_FLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions
+CXX_FLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -I ./
 
 # Here we declare variables containing the command to access
 # Our compiler and linker
-CXX = i386-elf-g++
-LD = i386-elf-ld
+CXX = x86_64-elf-g++
+LD = x86_64-elf-ld
 
 
 
