@@ -18,8 +18,8 @@ CXX_FLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions
 
 # Here we declare variables containing the command to access
 # Our compiler and linker
-CXX = x86_64-elf-g++
-LD = x86_64-elf-ld
+CXX = i386-elf-g++
+LD = i386-elf-ld
 
 
 
