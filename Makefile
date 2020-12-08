@@ -3,8 +3,8 @@ CXX = i386-elf-g++
 LD = /usr/local/i386elfgcc/bin/i386-elf-ld
 CFLAGS = -lgcc -g -I ./ -ffreestanding
 
-C_SOURCES = $(wildcard kernel/*.c kernel/C/*.c kernel/C/**/*.c)
-C_HEADERS = $(wildcard kernel/*.h kernel/C/*.h kernel/C/**/*.h)
+C_SOURCES = $(wildcard kernel/*.c)
+C_HEADERS = $(wildcard kernel/*.h)
 
 CXX_SOURCES = $(wildcard)
 CXX_HEADERS = $(wildcard)
@@ -14,9 +14,13 @@ OBJ = ${C_SOURCES:.c=.o}
 
 grub: kernel.elf
 	mv kernel.elf image/boot/kernel.elf
+	grub-mkrescue -o image.iso image/
 
 
-kernel.elf: kernel/asm/boot.o ${OBJ}
+run: grub
+	qemu-system-x86_64 -hda image.iso
+
+kernel.elf: boot/boot.o ${OBJ}
 	${LD} -Tlink.ld $^ -o $@
 
 
@@ -30,5 +34,5 @@ kernel.elf: kernel/asm/boot.o ${OBJ}
 
 
 clean:
-	rm -f kernel.elf
+	rm -f image.iso kernel.elf image/boot/kernel.elf
 	find . -type f -name '*.o' -delete
