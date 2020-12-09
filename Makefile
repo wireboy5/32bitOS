@@ -1,24 +1,24 @@
-# This is a variable containing all of the C++ sources.
+# This is a variable containing all of the c sources.
 # This will remain empty until the future
-CXX_SOURCES = $(wildcard kernel/*.cpp kernel/**/*.cpp)
+C_SOURCES = $(wildcard kernel/*.c kernel/**/*.c)
 
-# We also do the same for C++ headers
-CXX_HEADERS = $(wildcard kernel/*.h kernel/**/*.h)
+# We also do the same for c headers
+C_HEADERS = $(wildcard kernel/*.h kernel/**/*.h)
 
 # And we do the same for assembly files
 ASM_SOURCES = $(wildcard)
 
 # Now lets create another variable containing all of our object files
-OBJECTS = ${CXX_SOURCES:.cpp=.o} # One for C++
+OBJECTS = ${C_SOURCES:.c=.o} # One for c
 ASMOBJECTS = ${ASM_SOURCES:.asm=.o} # One for ASM
 
 # Now lets create a variable for all of the flags to be passed to out
-# C++ compiler
-CXX_FLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -I ./
+# c compiler
+C_FLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -I ./
 
 # Here we declare variables containing the command to access
 # Our compiler and linker
-CXX = x86_64-elf-g++
+C = x86_64-elf-gcc
 LD = x86_64-elf-ld
 
 
@@ -41,9 +41,9 @@ run: grub
 # And here we define some rules for resolving wildcard object files
 # These will go at the bottom of the file
 
-# First for C++ files
-%.o: %.cpp ${CXX_HEADERS}
-	${CXX} ${CXX_FLAGS} -c $< -o $@
+# First for c files
+%.o: %.c ${C_HEADERS}
+	${C} ${C_FLAGS} -c $< -o $@
 
 
 # Now for assembly files
