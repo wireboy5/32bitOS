@@ -52,4 +52,5 @@ run: grub
 
 # Clean
 clean:
-	rm -f kernel.elf image/boot/kernel.elf image.iso kernel/asm/*.o kernel/*.o
+	rm -rf kernel.elf image/boot/kernel.elf image.iso
+	find . -type f -name '*.o' -delete
