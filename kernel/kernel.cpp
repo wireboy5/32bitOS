@@ -1,9 +1,7 @@
 #include "kernel.h"
 
 extern "C" int kernel_main(){
-    
-    setChar('F',0,0,0xFf);
-
+    VGA_kprint("abcd\n");
     
     return 0;
 }
