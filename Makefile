@@ -1,9 +1,9 @@
 # This is a variable containing all of the c sources.
 # This will remain empty until the future
-C_SOURCES = $(wildcard kernel/*.c kernel/**/*.c)
+C_SOURCES = $(wildcard kernel/*.c kernel/**/*.c kernel/**/**/*.c)
 
 # We also do the same for c headers
-C_HEADERS = $(wildcard kernel/*.h kernel/**/*.h)
+C_HEADERS = $(wildcard kernel/*.h kernel/**/*.h kernel/**/**/*.h)
 
 # And we do the same for assembly files
 ASM_SOURCES = $(wildcard)
@@ -18,8 +18,8 @@ C_FLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -I ./
 
 # Here we declare variables containing the command to access
 # Our compiler and linker
-C = x86_64-elf-gcc
-LD = x86_64-elf-ld
+C = i386-elf-gcc
+LD = i386-elf-ld
 
 
 
@@ -34,7 +34,7 @@ kernel.elf: kernel/asm/boot.o ${OBJECTS}
 
 # Runs the kernel
 run: grub
-	qemu-system-x86_64 -hda image.iso -machine type=pc-q35-2.10
+	qemu-system-i386 -hda image.iso -machine type=pc-q35-2.10
 
 
 
@@ -48,7 +48,7 @@ run: grub
 
 # Now for assembly files
 %.o: %.asm
-	nasm $< -f elf64 -o $@
+	nasm $< -f elf -o $@
 
 # Clean
 clean:
