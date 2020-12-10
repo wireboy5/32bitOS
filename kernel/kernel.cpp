@@ -20,10 +20,10 @@
         F : white. 
 */
 
-int kernel_main(){
+extern "C" int kernel_main(){
     
     
-    // Print that we have initialized the heap
+    // Print that we are online
     printf("[%C OK %C] Running in 32 bit mode.",0x02,0x0f);
 
     // Initializing GDT

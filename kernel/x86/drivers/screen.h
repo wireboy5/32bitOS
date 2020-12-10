@@ -17,7 +17,7 @@ void clearScreen();
 
 void kprint(char * s);
 
-char* printf(char* format,  ...);
+void printf(const char* format,  ...);
 
 void setCursorPosition(uint8_t x, uint8_t y);
 

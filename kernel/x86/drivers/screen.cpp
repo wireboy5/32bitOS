@@ -32,13 +32,11 @@ uint32_t getCursorPosition(){
 }
 
 void clearScreen(){
-    size_t size = SCREENHEIGHT * SCREENWIDTH;
-    char* video_memory = (char*) 0xb8000;
+    
     for(int x = 0; x < SCREENWIDTH; x++){
         for(int y = 0; y < SCREENWIDTH; y++){
             setChar(' ',x,y,0x00);
         }
-        //video_memory[i*2] = ' ';
     }
     setCursorPosition(0,0);
 }
@@ -95,8 +93,8 @@ void putChar(char c){
     printChar(c,0x0f);
 }
 
-char* printf(char* format,  ...){
-	char *traverse; 
+void printf(const char* format,  ...){
+	const char *traverse; 
 	unsigned int i; 
 	char *s; 
     char buf[33];
