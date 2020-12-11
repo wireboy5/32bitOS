@@ -4,18 +4,19 @@
 
 #define IDTSIZE 256
 
+
 struct idt_entry_t {
     uint16_t baseLow;
     uint16_t selector;
     uint8_t zero = 0;
     uint8_t flags;
     uint16_t baseHigh;
-};
+} __attribute__((packed));
 
 struct idt_ptr_t {
     uint16_t limit;
     uint32_t baseAddr;
-};
+} __attribute__((packed));
 
 extern "C" void isr0();
 extern "C" void isr1();
