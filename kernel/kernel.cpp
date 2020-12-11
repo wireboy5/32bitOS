@@ -37,10 +37,10 @@ extern "C" int kernel_main(){
     initializeIDT();
     printf("[%C OK %C] Initialized the IDT.\n",0x02,0x0f);
     
-    asm volatile("int $31");
-    
-    
-    printf("[%C OK %C] IDT Test.\n",0x02,0x0f);
+    // Initialize Timer
+    initTimer(50);
+    printf("[%C OK %C] Initialized the PIT.\n",0x02,0x0f);
+
 	return 0;
 
 }
