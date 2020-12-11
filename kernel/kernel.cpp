@@ -39,6 +39,7 @@ extern "C" int kernel_main(){
     
     asm volatile("int $31");
     
+    
     printf("[%C OK %C] IDT Test.\n",0x02,0x0f);
 	return 0;
 
