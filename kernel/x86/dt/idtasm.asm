@@ -4,8 +4,7 @@ flushIDT:
    mov eax, [esp+4]
    lidt [eax]
    ret
-
- %macro ISR_NOERRCODE 1
+%macro ISR_NOERRCODE 1
   [GLOBAL isr%1]
   isr%1:
     cli
