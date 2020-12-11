@@ -1,58 +1,35 @@
 #pragma once
 #include <stdint.h>
-#include <kernel/x86/mem/mem.h>
+/* Segment selectors */
+#define KERNEL_CS 0x08
 
-#define IDTSIZE 256
+/* How every interrupt gate (handler) is defined */
+typedef struct {
+    uint16_t low_offset; /* Lower 16 bits of handler function address */
+    uint16_t sel; /* Kernel segment selector */
+    uint8_t always0;
+    /* First byte
+     * Bit 7: "Interrupt is present"
+     * Bits 6-5: Privilege level of caller (0=kernel..3=user)
+     * Bit 4: Set to 0 for interrupt gates
+     * Bits 3-0: bits 1110 = decimal 14 = "32 bit interrupt gate" */
+    uint8_t flags; 
+    uint16_t high_offset; /* Higher 16 bits of handler function address */
+} __attribute__((packed)) idt_gate_t ;
 
-
-struct idt_entry_t {
-    uint16_t baseLow;
-    uint16_t selector;
-    uint8_t zero = 0;
-    uint8_t flags;
-    uint16_t baseHigh;
-} __attribute__((packed));
-
-struct idt_ptr_t {
+/* A pointer to the array of interrupt handlers.
+ * Assembly instruction 'lidt' will read it */
+typedef struct {
     uint16_t limit;
-    uint32_t baseAddr;
-} __attribute__((packed));
+    uint32_t base;
+} __attribute__((packed)) idt_register_t;
 
-extern "C" void isr0();
-extern "C" void isr1();
-extern "C" void isr2();
-extern "C" void isr3();
-extern "C" void isr4();
-extern "C" void isr5();
-extern "C" void isr6();
-extern "C" void isr7();
-extern "C" void isr8();
-extern "C" void isr9();
-extern "C" void isr10();
-extern "C" void isr11();
-extern "C" void isr12();
-extern "C" void isr13();
-extern "C" void isr14();
-extern "C" void isr15();
-extern "C" void isr16();
-extern "C" void isr17();
-extern "C" void isr18();
-extern "C" void isr19();
-extern "C" void isr20();
-extern "C" void isr21();
-extern "C" void isr22();
-extern "C" void isr23();
-extern "C" void isr24();
-extern "C" void isr25();
-extern "C" void isr26();
-extern "C" void isr27();
-extern "C" void isr28();
-extern "C" void isr29();
-extern "C" void isr30();
-extern "C" void isr31();
+#define IDT_ENTRIES 256
 
-extern "C" void flushIDT(uint32_t ptrAddr);
 
-void initializeIDT();
-void setIdtGate(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags);
+
+/* Functions implemented in idt.c */
+void set_idt_gate(int n, uint32_t handler);
+void set_idt();
+
 
