@@ -6,7 +6,7 @@ CXX_SOURCES = $(wildcard kernel/*.cpp kernel/**/*.cpp kernel/**/**/*.cpp)
 CXX_HEADERS = $(wildcard kernel/*.h kernel/**/*.h kernel/**/**/*.h)
 
 # And we do the same for assembly files
-ASM_SOURCES = $(wildcard)
+ASM_SOURCES = $(wildcard kernel/x86/**/*.asm)
 
 # Now lets create another variable containing all of our object files
 OBJECTS = ${CXX_SOURCES:.cpp=.o} # One for c
@@ -29,12 +29,12 @@ grub: kernel.elf
 	grub-mkrescue -o image.iso image/
 
 # A target to build the kernel.elf file
-kernel.elf: kernel/asm/boot.o ${OBJECTS}
+kernel.elf: kernel/asm/boot.o ${ASMOBJECTS} ${OBJECTS} 
 	${LD} -o $@ -Tlink.ld $^
 
 # Runs the kernel
 run: grub
-	qemu-system-i386 -hda image.iso -machine type=pc-q35-2.10
+	qemu-system-x86_64 -hda image.iso -machine type=pc-q35-2.10
 
 
 
