@@ -35,12 +35,11 @@ extern "C" int kernel_main(){
 
     // Initializing IDT
     initializeIDT();
-    asm volatile("sti");
     printf("[%C OK %C] Initialized the IDT.\n",0x02,0x0f);
     
-    asm volatile("int $0x3");
+    asm volatile("int $31");
     
-    printf("[%C OK %C] Initialized the IDT.\n",0x02,0x0f);
+    printf("[%C OK %C] IDT Test.\n",0x02,0x0f);
 	return 0;
 
 }
