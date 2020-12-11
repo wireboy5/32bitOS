@@ -24,11 +24,18 @@ extern "C" int kernel_main(){
     
     
     // Print that we are online
-    printf("[%C OK %C] Running in 32 bit mode.",0x02,0x0f);
+    printf("[%C OK %C] Running in 32 bit mode.\n",0x02,0x0f);
 
     // Initializing GDT
+    initializeGDT();
+
+    // Say that we have initialized the GDT
+    printf("[%C OK %C] Initialized the GDT.\n",0x02,0x0f);
     
-    
+
+    // Initializing IDT
+    initializeIDT();
+    printf("[%C OK %C] Initialized the IDT.\n",0x02,0x0f);
 
 	return 0;
 
