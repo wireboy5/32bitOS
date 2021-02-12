@@ -41,6 +41,8 @@ extern "C" int kernel_main(){
     initTimer(50);
     printf("[%C OK %C] Initialized the PIT.\n",0x02,0x0f);
 
+    
+
 	return 0;
 
 }
