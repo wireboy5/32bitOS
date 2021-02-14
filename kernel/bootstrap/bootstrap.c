@@ -2,8 +2,8 @@
 
 int bootstrap(){
     
-    // Initialize the GDT
-    
+    // Initialize GDT
+    init_gdt();
     
     return 0;
 }
