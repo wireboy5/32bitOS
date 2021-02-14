@@ -1,6 +1,6 @@
 # This is a variable containing all of the c sources.
 # This will remain empty until the future
-CXX_SOURCES = $(wildcard kernel/*.cpp kernel/**/*.cpp kernel/**/**/*.cpp)
+CXX_SOURCES = $(wildcard kernel/*.c kernel/**/*.c kernel/**/**/*.c)
 
 # We also do the same for c headers
 CXX_HEADERS = $(wildcard kernel/*.h kernel/**/*.h kernel/**/**/*.h)
@@ -9,8 +9,12 @@ CXX_HEADERS = $(wildcard kernel/*.h kernel/**/*.h kernel/**/**/*.h)
 ASM_SOURCES = $(wildcard kernel/x86/**/*.asm)
 
 # Now lets create another variable containing all of our object files
-OBJECTS = ${CXX_SOURCES:.cpp=.o} # One for c
+OBJECTS = ${CXX_SOURCES:.c=.o} # One for c
 ASMOBJECTS = ${ASM_SOURCES:.asm=.o} # One for ASM
+
+BOOTSTRAP_HEADERS = $(wildcard kernel/bootstrap/*.h kernel/bootstrap/**/*.h)
+BOOTSTRAP_SOURCES = $(wildcard kernel/bootstrap/*.c kernel/bootstrap/**/*.c)
+BOOTSTRAP_OBJECTS = ${BOOTSTRAP_SOURCES:.c=.o32}
 
 # Now lets create a variable for all of the flags to be passed to out
 # c compiler
@@ -18,8 +22,9 @@ CXX_FLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -I ./
 
 # Here we declare variables containing the command to access
 # Our compiler and linker
-CXX = i386-elf-g++
-LD = i386-elf-ld
+CXX = x86_64-elf-gcc
+LD = x86_64-elf-ld
+CXX32 = i326-elf-gcc
 
 
 
@@ -34,7 +39,7 @@ kernel.elf: kernel/asm/boot.o ${ASMOBJECTS} ${OBJECTS}
 
 # Runs the kernel
 run: grub
-	qemu-system-x86_64 -hda image.iso -machine type=pc-q35-2.10
+	bochs -f bochsrc.txt -q
 
 
 
@@ -42,13 +47,16 @@ run: grub
 # These will go at the bottom of the file
 
 # First for c files
-%.o: %.cpp ${CXX_HEADERS}
+%.o: %.c ${CXX_HEADERS}
 	${CXX} ${CXX_FLAGS} -c $< -o $@
 
+%.o32: %.c %{BOOTSTRAP_HEADERS}
+	%{CXX32} %{CXX32_FLAGS} -C $< -o $@ -f elf64
 
 # Now for assembly files
 %.o: %.asm
-	nasm $< -f elf -o $@
+	nasm $< -f elf64 -o $@
+
 
 # Clean
 clean:

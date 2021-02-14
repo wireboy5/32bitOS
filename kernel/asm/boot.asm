@@ -44,7 +44,8 @@ multiboot:
     dd start
 
 
-
+; Make sure we can access bootstrap function
+[EXTERN bootstrap]
 
 ; We need to make sure we can access the kernel entry point globaly
 [GLOBAL start]
@@ -57,7 +58,10 @@ start:
     ; Disable interrupts
     cli
 
-    ; Call the kernel_main function
+    ; Bootstrap
+    call bootstrap
+    
+    ; Enter the kernel
     call kernel_main
 
     ; And here we loop infinitely
